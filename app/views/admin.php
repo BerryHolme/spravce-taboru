@@ -3,9 +3,113 @@
 <head>
     <title>Admin</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function stopCamp(campId) {
+            if (confirm('Opravdu chcete zrušit přihlašování?')) {
+                $.ajax({
+                    url: '/stopCamp',
+                    type: 'POST',
+                    data: { id: campId },
+                    success: function(response) {
+                        // Update the status and button in the table row
+                        $('#campStatus' + campId).text('Zastaveno');
+                        $('#campRow' + campId + ' button').attr('onclick', 'startCamp(' + campId + ')').text('Zahájit přihlašování');
+                    },
+                    error: function() {
+                        alert('Chyba při zastavování přihlašování');
+                    }
+                });
+            }
+        }
+
+        function startCamp(campId) {
+            if (confirm('Opravdu chcete zahájit přihlašování?')) {
+                $.ajax({
+                    url: '/startCamp',
+                    type: 'POST',
+                    data: { id: campId },
+                    success: function(response) {
+                        // Update the status and button in the table row
+                        $('#campStatus' + campId).text('Aktivní');
+                        $('#campRow' + campId + ' button').attr('onclick', 'stopCamp(' + campId + ')').text('Zrušit přihlašování');
+                    },
+                    error: function() {
+                        alert('Chyba při zahajování přihlašování');
+                    }
+                });
+            }
+        }
+
+    </script>
     <style>
-        #campForm {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #333;
+        }
+
+        .button, #toggleFormButton, input[type="submit"], button {
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none; /* Odstranění podtržení u odkazů */
+            display: inline-block;
+        }
+
+        .button:hover, #toggleFormButton:hover, input[type="submit"]:hover, button:hover {
+            background-color: #3f51b5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #5c6bc0;
+            color: white;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="number"], input[type="date"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -14,7 +118,7 @@
     <h1>Admin</h1>
 </header>
 
-<a href="/adminLogout">Odhlásit se</a>
+<a href="/adminLogout" class="button">Odhlásit se</a>
 <button id="toggleFormButton">Vytvořit tábor</button>
 
 <div id="campForm" style="display:none;">
@@ -50,6 +154,60 @@
     </form>
 </div>
 
+<h1>Seznam Táborů</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Jméno</th>
+        <th>Skupina</th>
+        <th>Název kempu</th>
+        <th>Maximální počet dětí</th>
+        <th>Počet vedoucích</th>
+        <th>Datum zahájení</th>
+        <th>Datum konce</th>
+        <th>Více informací</th>
+        <th>Stav</th>
+        <th>Seznam dětí</th>
+    </tr>
+    </thead>
+    <tbody>
+    <repeat group="{{@camps}}" value="{{@camp}}">
+        <tr id="campRow{{@camp.id}}">
+            <td>{{@camp.name}}</td>
+            <td>{{@camp.skupina}}</td>
+            <td>{{@camp.placename}}</td>
+            <td>{{@camp.kids}}</td>
+            <td>{{@camp.leaders}}</td>
+            <td>{{@camp.start}}</td>
+            <td>{{@camp.end}}</td>
+            <td>{{@camp.info}}</td>
+            <td>
+                <check if="{{@camp.state == 0}}">
+                    <true>
+                        <button onclick="stopCamp({{@camp.id}})">Zrušit přihlašování</button>
+                    </true>
+
+                    <false>
+                        <button onclick="startCamp({{@camp.id}})">Zahájit přihlašování</button>
+                    </false>
+                </check>
+            </td>
+            <td>
+                <form method="post" action="/kidsAdmin">
+                    <input type="hidden" name="id" value="{{@camp.id}}">
+                    <input type="submit" value="Seznam dětí">
+                </form>
+            </td>
+        </tr>
+    </repeat>
+    </tbody>
+</table>
+
+
+
+
+
 <script>
     var toggleButton = document.getElementById("toggleFormButton");
     var form = document.getElementById("campForm");
@@ -83,9 +241,6 @@
             }
         });
     });
-
-
 </script>
-
 </body>
 </html>

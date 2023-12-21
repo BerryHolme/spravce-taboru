@@ -36,6 +36,8 @@ class adminControl
         if(!$base->get("SESSION.admin.state")){
             $base->reroute("/adminLogin");
         }
+        $camps = (new \models\camps)->find([], ['order' => 'id DESC']);
+        $base->set('camps', $camps);
 
         echo \Template::instance()->render("admin.php");
     }
@@ -56,6 +58,58 @@ class adminControl
 
         $camp->save();
         echo 'vytvořeno';
+    }
+
+    public function stopCamp(\Base $base)
+    {
+        $id = $_POST['id'];
+        $camps = new \models\camps();
+        $camp = $camps->findone(["id=?",$id]);
+        $camp->state = 1;
+        $camp->save();
+    }
+
+    public function startCamp(\Base $base)
+    {
+        $id = $_POST['id'];
+        $camps = new \models\camps();
+        $camp = $camps->findone(["id=?",$id]);
+        $camp->state = 0;
+        $camp->save();
+    }
+
+    public function kidsAdmin(\Base $base)
+    {
+        $id = $_POST['id'];
+        $apps = (new \models\applications())->find(['camp_id=?', $id],['order' => 'time DESC']);
+
+        $base->set('apps', $apps);
+
+        $camps = new \models\camps();
+        $camp = $camps->findone(["id=?",$id]);
+        $base->set('camp', $camp->name);
+
+        echo \Template::instance()->render("kidAdmin.php");
+
+
+    }
+
+    public function denieApp(\Base $base)
+    {
+        $id = $_POST['id'];
+        $apps = new \models\applications();
+        $app = $apps->findone(["id=?",$id]);
+        $app->state = 2;
+        $app->save();
+    }
+
+    public function acceptApp(\Base $base)
+    {
+        $id = $_POST['id'];
+        $apps = new \models\applications();
+        $app = $apps->findone(["id=?",$id]);
+        $app->state = 1 ;
+        $app->save();
     }
 
 }

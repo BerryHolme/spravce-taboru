@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <title>Seznam vašich dětí</title>
+    <title>Seznam přihlášek</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function deleteKid(kidId) {
+        function deleteApp(appId) {
             if (confirm('Opravdu chcete smazat toto dítě?')) {
                 $.ajax({
-                    url: '/deleteKid',
+                    url: '/deleteApp',
                     type: 'POST',
-                    data: { id: kidId },
+                    data: { id: appId },
                     success: function(response) {
-                        // Zde můžete aktualizovat UI, např. odstranit řádek tabulky
-                        $('#row-' + kidId).remove();
+                        // Remove the table row on successful deletion
+                        $('#appRow' + appId).remove();
                     },
                     error: function() {
                         alert('Chyba při mazání dítěte');
@@ -81,28 +81,39 @@
 </head>
 <body>
 <header class="site-header">
-    <h1>Seznam vašich zaregistrovaných dětí</h1>
+    <h1>Seznam přihlášek</h1>
 </header>
-
 <main>
     <section>
         <table class="styled-table">
                 <thead>
                 <tr>
-                    <th>Jméno</th>
-                    <th>Příjmení</th>
-                    <th>Datum narození</th>
-                    <th>Smazat dítě</th>
+                    <th>Jméno dítěte</th>
+                    <th>Tábor</th>
+                    <th>Datum vytvoření</th>
+                    <th>Stav</th>
+                    <th>Smazat přihlášku</th>
                 </tr>
                 </thead>
                 <tbody>
-                <repeat group="{{@kids}}" value="{{@kid}}">
-                    <tr id="row-{{@kid.id}}">
-                        <td>{{@kid.name}}</td>
-                        <td>{{@kid.surname}}</td>
-                        <td>{{@kid.birth}}</td>
+                <repeat group="{{@apps}}" value="{{@app}}">
+                    <tr id="appRow{{@app.id}}">
+                        <td>{{@app.kid}}</td>
+                        <td>{{@app.camp}}</td>
+                        <td>{{@app.time}}</td>
                         <td>
-                            <button onclick="deleteKid({{@kid.id}})">Smazat</button>
+                            <check if="{{@app.state == 0}}">
+                                <true>Čeká</true>
+                                <false>
+                                    <check if="{{@app.state == 1}}">
+                                        <true>Schváleno</true>
+                                        <false>Zamítnuto</false>
+                                    </check>
+                                </false>
+                            </check>
+                        </td>
+                        <td>
+                            <button onclick="deleteApp({{@app.id}})">Zrušit přihlášku</button>
                         </td>
                     </tr>
                 </repeat>

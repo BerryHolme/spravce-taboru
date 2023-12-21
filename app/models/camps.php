@@ -19,6 +19,7 @@ class camps extends Cortex
         'start'=>['type'=>'DATE', 'nullable'=>false],
         'end'=>['type'=>'DATE', 'nullable'=>false],
         'info'=>['type'=>'varchar256', 'nullable'=>false],
+        'state'=>['type'=>'INT', 'nullable'=>false],
 
     ];
 
