@@ -8,7 +8,7 @@
         function stopCamp(campId) {
             if (confirm('Opravdu chcete zrušit přihlašování?')) {
                 $.ajax({
-                    url: '/stopCamp',
+                    url: 'stopCamp/',
                     type: 'POST',
                     data: { id: campId },
                     success: function(response) {
@@ -26,7 +26,7 @@
         function startCamp(campId) {
             if (confirm('Opravdu chcete zahájit přihlašování?')) {
                 $.ajax({
-                    url: '/startCamp',
+                    url: 'startCamp/',
                     type: 'POST',
                     data: { id: campId },
                     success: function(response) {
@@ -118,11 +118,11 @@
     <h1>Admin</h1>
 </header>
 
-<a href="/adminLogout" class="button">Odhlásit se</a>
+<a href="adminLogout/" class="button">Odhlásit se</a>
 <button id="toggleFormButton">Vytvořit tábor</button>
 
 <div id="campForm" style="display:none;">
-    <form id="form" action="/newcamp" method="post">
+    <form id="form" action="/spravce-taboru/newcamp/" method="post">
         <label for="name">Jméno Tábora:</label>
         <input type="text" id="name" name="name"><br>
 
@@ -194,7 +194,7 @@
                 </check>
             </td>
             <td>
-                <form method="post" action="/kidsAdmin">
+                <form method="post" action="kidsAdmin/">
                     <input type="hidden" name="id" value="{{@camp.id}}">
                     <input type="submit" value="Seznam dětí">
                 </form>
@@ -225,7 +225,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/newcamp',
+            url: 'newcamp/',
             data: formData,
             success: function(response) {
                 // Zde zobrazíme zprávu získanou ze serveru

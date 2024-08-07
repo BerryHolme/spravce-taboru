@@ -9,8 +9,8 @@ class kids extends Cortex
 {
     protected $db='DB', $table ='kids';
     protected $fieldConf=[
-        'id' =>['type'=>'INT', 'nullable'=>false],
-        'parent_id' =>['type'=>'INT', 'nullable'=>false],
+        'id' =>['type'=>'INT4', 'nullable'=>false],
+        'parent_id' =>['type'=>'INT4', 'nullable'=>false],
         'name' =>['type'=>'VARCHAR256','nullable' =>false],
         'surname' =>['type'=>'VARCHAR256','nullable' =>false],
         'birth' => ['type'=>'DATE', 'nullable' =>false]

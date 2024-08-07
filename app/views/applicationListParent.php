@@ -7,7 +7,7 @@
         function deleteApp(appId) {
             if (confirm('Opravdu chcete smazat toto dítě?')) {
                 $.ajax({
-                    url: '/deleteApp',
+                    url: 'deleteApp/',
                     type: 'POST',
                     data: { id: appId },
                     success: function(response) {

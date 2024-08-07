@@ -7,7 +7,7 @@
         function denieApp(appId) {
             if (confirm('Opravdu chcete zrušit žádost?')) {
                 $.ajax({
-                    url: '/denieApp',
+                    url: 'denieApp/',
                     type: 'POST',
                     data: { id: appId },
                     success: function(response) {
@@ -23,7 +23,7 @@
         function acceptApp(appId) {
             if (confirm('Opravdu chcete přijmout žádost?')) {
                 $.ajax({
-                    url: '/acceptApp',
+                    url: 'acceptApp/',
                     type: 'POST',
                     data: { id: appId },
                     success: function(response) {

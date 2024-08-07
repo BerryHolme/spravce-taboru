@@ -110,9 +110,9 @@
 
 
     <nav>
-        <a href="/kids" class="button-style">Seznam vašich dětí</a>
-        <a href="/appListParent" class="button-style">Seznam přihlášek</a>
-        <a href="/logout" class="button-style">Odhlásit se</a>
+        <a href="kids/" class="button-style">Seznam vašich dětí</a>
+        <a href="appListParent/" class="button-style">Seznam přihlášek</a>
+        <a href="logout/" class="button-style">Odhlásit se</a>
     </nav>
 
 </header>
@@ -120,8 +120,8 @@
 <main>
     <section id="childRegistrationForm">
         <h2>Registrovat dítě</h2>
-        <form id="childForm" action="/registerKid" method="POST">
-            <form id="childForm" action="/registerKid" method="POST">
+    <form id="childForm" action="registerKid/" method="POST">
+            <form id="childForm" action="registerKid/" method="POST">
                 Jméno:
                 <input type="text" name="name" required><br>
 
@@ -170,7 +170,7 @@
                                 Tábor už je obsazen.
                             </true>
                             <false>
-                                <form class="campRegistrationForm" action="/registerKidToCamp" method="post">
+                                <form class="campRegistrationForm" action="registerKidToCamp/" method="post">
                                     <select name="kidId" class="kidSelector">
                                         <repeat group="{{@kids}}" value="{{@kid}}">
                                             <option value="{{@kid.id}}">{{@kid.name}} {{@kid.surname}}</option>
@@ -201,7 +201,7 @@
 
         $.ajax({
             type: 'POST',
-            url: '/registerKid',
+            url: 'registerKid/',
             data: formData,
             success: function(response) {
                 // Zde zobrazíme zprávu získanou ze serveru

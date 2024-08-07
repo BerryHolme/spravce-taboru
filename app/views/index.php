@@ -32,7 +32,8 @@
 </head>
 <body>
 <h1>Správce táborů</h1>
-<a href="/login">Přihlásit se</a>
-<a href="/register">Zaregistrovat se</a>
+<a href="login/">Přihlásit se</a>
+<a href="register/">Zaregistrovat se</a>
+<a href="admin/">Přihlásit se jako administrátor</a>
 </body>
 </html>

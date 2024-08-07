@@ -7,7 +7,7 @@
         function deleteKid(kidId) {
             if (confirm('Opravdu chcete smazat toto dítě?')) {
                 $.ajax({
-                    url: '/deleteKid',
+                    url: 'deleteKid/',
                     type: 'POST',
                     data: { id: kidId },
                     success: function(response) {
